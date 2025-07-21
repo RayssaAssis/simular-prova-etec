@@ -1,38 +1,20 @@
-// models/disciplina.js
+
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  const Disciplina = sequelize.define('Disciplina', {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    nome: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-      unique: true
-    },
-    descricao: {
-      type: DataTypes.TEXT,
-      allowNull: true
-    },
-    ativo: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: true
-    }
+  return sequelize.define('Usuario', {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    nome: { type: DataTypes.STRING(100), allowNull: false },
+    email: { type: DataTypes.STRING(100), allowNull: false, unique: true },
+    senha: { type: DataTypes.STRING(255), allowNull: false },
+    nascimento: { type: DataTypes.DATEONLY },
+    cidade: { type: DataTypes.STRING(100) },
+    nivel_acesso: { type: DataTypes.ENUM('estudante', 'admin'), defaultValue: 'estudante' },
+    cpf: { type: DataTypes.STRING(14) },
+    foto: { type: DataTypes.STRING(255) },
+    ativo: { type: DataTypes.BOOLEAN, defaultValue: true }
   }, {
-    tableName: 'disciplinas',
+    tableName: 'usuarios',
     timestamps: false
   });
-
-  Disciplina.associate = (models) => {
-    Disciplina.hasMany(models.Materia, {
-      foreignKey: 'id_disciplina',
-      as: 'materias'
-    });
-  };
-
-  return Disciplina;
 };

@@ -16,12 +16,12 @@ module.exports = {
         ativo: true
       },
       {
-        nome: 'Professor Silva',
-        email: 'professor@simuladoretec.com',
+        nome: 'Silva Lima',
+        email: 'silva@simuladoretec.com',
         senha: await bcrypt.hash('prof123', 12),
         nascimento: '1985-05-15',
         cidade: 'São Paulo',
-        nivel_acesso: 'professor',
+        nivel_acesso: 'estudante', // mudou de 'professor' para 'estudante'
         cpf: '111.111.111-11',
         foto: null,
         ativo: true

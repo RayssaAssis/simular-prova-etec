@@ -1,18 +1,19 @@
 // src/routes/index.js
 const express = require('express');
 const router = express.Router();
+const path = require('path');
 
-// Lista de rotas disponíveis
-const availableRoutes = [
-  { path: '/auth', module: './auth', description: 'Autenticação e autorização' },
-  { path: '/disciplinas', module: './disciplinas', description: 'Gerenciamento de disciplinas' },
-  { path: '/materias', module: './materias', description: 'Gerenciamento de matérias' },
-  { path: '/provas', module: './provas', description: 'Gerenciamento de provas' },
-  { path: '/questoes', module: './questoes', description: 'Gerenciamento de questões' },
-  { path: '/alternativas', module: './alternativas', description: 'Gerenciamento de alternativas' },
-  { path: '/usuarios', module: './usuarios', description: 'Gerenciamento de usuários' },
-  { path: '/simulados', module: './simulados', description: 'Sistema de simulados' }
+const availableRoutes = [ 
+  { path: '/auth', module: path.join(__dirname, 'auth.js'), description: 'Autenticação e autorização' },
+  { path: '/disciplinas', module: path.join(__dirname, 'disciplinas.js'), description: 'Gerenciamento de disciplinas' },
+  { path: '/materias', module: path.join(__dirname, 'materias.js'), description: 'Gerenciamento de matérias' },
+  { path: '/provas', module: path.join(__dirname, 'provas.js'), description: 'Gerenciamento de provas' },
+  { path: '/questoes', module: path.join(__dirname, 'questoes.js'), description: 'Gerenciamento de questões' },
+  { path: '/alternativas', module: path.join(__dirname, 'alternativas.js'), description: 'Gerenciamento de alternativas' },
+  { path: '/usuarios', module: path.join(__dirname, 'usuarios.js'), description: 'Gerenciamento de usuários' },
+  { path: '/simulados', module: path.join(__dirname, 'simulados.js'), description: 'Sistema de simulados' }
 ];
+
 
 // Carregar rotas dinamicamente
 const loadedRoutes = [];
@@ -36,6 +37,7 @@ availableRoutes.forEach(route => {
       error: error.message
     });
     console.log(`⚠️ Rotas ${route.path} não encontradas`);
+    console.log(`⚠️ Erro ao carregar ${route.path}:`, error.stack || error.message);
   }
 });
 
