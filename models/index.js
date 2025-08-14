@@ -1,5 +1,5 @@
 
-const { Sequelize, DataTypes } = require('sequelize');
+const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
 const sequelize = new Sequelize(
@@ -22,6 +22,8 @@ const Materia = require('./materia')(sequelize);
 const Prova = require('./prova')(sequelize);
 const Questao = require('./questao')(sequelize);
 const Alternativa = require('./alternativa')(sequelize);
+const Simulado = require('./simulado')(sequelize);
+const SimuladoResposta = require('./simulado_resposta')(sequelize);
 
 const db = {
   Sequelize,
@@ -31,7 +33,9 @@ const db = {
   Materia,
   Prova,
   Questao,
-  Alternativa
+  Alternativa,
+  Simulado,
+  SimuladoResposta
 };
 
 // ✅ Executar as associações

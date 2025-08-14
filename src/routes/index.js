@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 
-const availableRoutes = [ 
+const availableRoutes = [
   { path: '/auth', module: path.join(__dirname, 'auth.js'), description: 'Autenticação e autorização' },
   { path: '/disciplinas', module: path.join(__dirname, 'disciplinas.js'), description: 'Gerenciamento de disciplinas' },
   { path: '/materias', module: path.join(__dirname, 'materias.js'), description: 'Gerenciamento de matérias' },
@@ -11,7 +11,8 @@ const availableRoutes = [
   { path: '/questoes', module: path.join(__dirname, 'questoes.js'), description: 'Gerenciamento de questões' },
   { path: '/alternativas', module: path.join(__dirname, 'alternativas.js'), description: 'Gerenciamento de alternativas' },
   { path: '/usuarios', module: path.join(__dirname, 'usuarios.js'), description: 'Gerenciamento de usuários' },
-  { path: '/simulados', module: path.join(__dirname, 'simulados.js'), description: 'Sistema de simulados' }
+  { path: '/simulados', module: path.join(__dirname, 'simulados.js'), description: 'Sistema de simulados' },
+  { path: '/simuladoRespostas', module: path.join(__dirname, 'simuladoRespostas.js'), description: 'Sistema de Resposta simulados' }
 ];
 
 

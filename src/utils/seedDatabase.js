@@ -76,7 +76,7 @@ async function seedDatabase() {
         nome: 'Professor Silva',
         email: 'professor@simuladoretec.com',
         senha: await bcrypt.hash('prof123', 12),
-        nivel_acesso: 'professor',
+        nivel_acesso: 'estudante',
         cidade: 'São Paulo',
         ativo: true
       },

@@ -7,6 +7,8 @@ module.exports = {
         id: 1,
         id_materia: 1, // Álgebra
         id_prova: 1,
+        id_disciplina: 1, // Álgebra pertence à Matemática (id: 1)
+        numero_questao: 1, // Primeira questão da prova 1
         enunciado: 'Qual é o valor de x na equação 2x + 5 = 15?',
         ativo: true
       },
@@ -14,6 +16,8 @@ module.exports = {
         id: 2,
         id_materia: 4, // Português
         id_prova: 1,
+        id_disciplina: 2, // Literatura pertence ao Português (id: 2)
+        numero_questao: 2, // Segunda questão da prova 1
         enunciado: 'Qual é a função sintática do termo destacado: "O livro QUE comprei é interessante"?',
         ativo: true
       },
@@ -21,6 +25,8 @@ module.exports = {
         id: 3,
         id_materia: 2, // Geometria
         id_prova: 2,
+        id_disciplina: 1, // Geometria pertence à Matemática (id: 1)
+        numero_questao: 1, // Primeira questão da prova 2
         enunciado: 'A área de um círculo com raio de 5 cm é:',
         ativo: true
       }
@@ -50,7 +56,11 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('alternativas', null, {});
-    await queryInterface.bulkDelete('questoes', null, {});
+    await queryInterface.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
+    await queryInterface.sequelize.query('TRUNCATE TABLE alternativas');
+    await queryInterface.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+    await queryInterface.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
+    await queryInterface.sequelize.query('TRUNCATE TABLE questoes');
+    await queryInterface.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
   }
 };

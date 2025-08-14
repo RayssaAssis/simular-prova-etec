@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const questaoController = require('../controllers/questaoController');
+const { authenticateToken, authorizeAdmin } = require('../middleware/auth');
+
+router.use(authenticateToken);
 
 router.get('/', async (req, res) => {
   try {
@@ -20,7 +23,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', authorizeAdmin, async (req, res) => {
   try {
     const nova = await questaoController.create(req.body);
     res.status(201).json({ success: true, questao: nova });
@@ -29,7 +32,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', authorizeAdmin, async (req, res) => {
   try {
     const atualizada = await questaoController.update(req.params.id, req.body);
     res.json({ success: true, questao: atualizada });
@@ -38,7 +41,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authorizeAdmin, async (req, res) => {
   try {
     const deletada = await questaoController.delete(req.params.id);
     res.json({ success: true, message: 'Questão deletada com sucesso', questao: deletada });

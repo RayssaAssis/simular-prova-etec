@@ -1,58 +1,3 @@
-// const { Questao } = require('../../models');
-
-// class QuestaoController {
-//   async getAll() {
-//     try {
-//       return await Questao.findAll({
-//         where: { ativo: true },
-//         order: [['id', 'ASC']]
-//       });
-//     } catch (error) {
-//       throw new Error('Erro ao buscar questões: ' + error.message);
-//     }
-//   }
-
-//   async getById(id) {
-//     try {
-//       const questao = await Questao.findByPk(id);
-//       if (!questao) throw new Error('Questão não encontrada');
-//       return questao;
-//     } catch (error) {
-//       throw new Error('Erro ao buscar questão por ID: ' + error.message);
-//     }
-//   }
-
-//   async create(dados) {
-//     try {
-//       return await Questao.create(dados);
-//     } catch (error) {
-//       throw new Error('Erro ao criar questão: ' + error.message);
-//     }
-//   }
-
-//   async update(id, dados) {
-//     try {
-//       const questao = await Questao.findByPk(id);
-//       if (!questao) throw new Error('Questão não encontrada');
-//       return await questao.update(dados);
-//     } catch (error) {
-//       throw new Error('Erro ao atualizar questão: ' + error.message);
-//     }
-//   }
-
-//   async delete(id) {
-//     try {
-//       const questao = await Questao.findByPk(id);
-//       if (!questao) throw new Error('Questão não encontrada');
-//       await questao.destroy();
-//       return questao;
-//     } catch (error) {
-//       throw new Error('Erro ao deletar questão: ' + error.message);
-//     }
-//   }
-// }
-
-// module.exports = new QuestaoController();
 
 const { Questao, Materia, Prova, Alternativa } = require('../../models');
 
@@ -93,7 +38,45 @@ class QuestaoController {
     }
   }
 
-  // Você pode manter seus métodos de create, update, delete normais
+  // Criar nova questão
+  async create(data) {
+    try {
+      const questao = await Questao.create(data);
+      return questao;
+    } catch (error) {
+      throw new Error('Erro ao criar questão: ' + error.message);
+    }
+  }
+
+  // Atualizar questão existente
+  async update(id, data) {
+    try {
+      const questao = await Questao.findByPk(id);
+      if (!questao) {
+        throw new Error('Questão não encontrada');
+      }
+      
+      await questao.update(data);
+      return questao;
+    } catch (error) {
+      throw new Error('Erro ao atualizar questão: ' + error.message);
+    }
+  }
+
+  // Deletar questão
+  async delete(id) {
+    try {
+      const questao = await Questao.findByPk(id);
+      if (!questao) {
+        throw new Error('Questão não encontrada');
+      }
+      
+      await questao.destroy();
+       return questao; 
+    } catch (error) {
+      throw new Error('Erro ao deletar questão: ' + error.message);
+    }
+  }
 }
 
 module.exports = new QuestaoController();

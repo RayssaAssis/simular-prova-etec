@@ -2,6 +2,9 @@
 const express = require('express');
 const router = express.Router();
 const alternativaController = require('../controllers/alternativaController');
+const { authenticateToken, authorizeAdmin } = require('../middleware/auth');
+
+router.use(authenticateToken);
 
 router.get('/', async (req, res) => {
   try {
@@ -21,7 +24,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', authorizeAdmin, async (req, res) => {
   try {
     const nova = await alternativaController.create(req.body);
     res.status(201).json({ success: true, alternativa: nova });
@@ -30,7 +33,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', authorizeAdmin, async (req, res) => {
   try {
     const atualizada = await alternativaController.update(req.params.id, req.body);
     res.json({ success: true, alternativa: atualizada });
@@ -39,7 +42,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authorizeAdmin, async (req, res) => {
   try {
     const deletada = await alternativaController.delete(req.params.id);
     res.json({ success: true, message: 'Alternativa deletada com sucesso', alternativa: deletada });

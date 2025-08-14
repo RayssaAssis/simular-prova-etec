@@ -1,3 +1,4 @@
+
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
@@ -17,6 +18,24 @@ router.post('/login', async (req, res) => {
     res.json({ success: true, ...resultado });
   } catch (e) {
     res.status(401).json({ success: false, error: e.message });
+  }
+});
+
+router.post('/esqueci-senha', async (req, res) => {
+  try {
+    const resultado = await authController.esqueciSenha(req.body);
+    res.json({ success: true, ...resultado });
+  } catch (e) {
+    res.status(400).json({ success: false, error: e.message });
+  }
+});
+
+router.post('/reset-senha', async (req, res) => {
+  try {
+    const resultado = await authController.resetSenha(req.body);
+    res.json({ success: true, ...resultado });
+  } catch (e) {
+    res.status(400).json({ success: false, error: e.message });
   }
 });
 

@@ -2,9 +2,13 @@
 const express = require('express');
 const usuarioController = require('../controllers/usuarioController');
 const router = express.Router();
+const { authenticateToken, authorizeAdmin, ownDataOrAdmin } = require('../middleware/auth');
+const authController = require('../controllers/authController');
+
+router.use(authenticateToken);
 
 // GET /usuarios - Buscar todos os usuários ativos
-router.get('/', async (req, res) => {
+router.get('/', authorizeAdmin, async (req, res) => {
   try {
     const usuarios = await usuarioController.getAll();
     res.json({ success: true, usuarios });
@@ -14,7 +18,7 @@ router.get('/', async (req, res) => {
 });
 
 // GET /usuarios/:id - Buscar usuário por ID
-router.get('/:id', async (req, res) => {
+router.get('/:id', ownDataOrAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const usuario = await usuarioController.getById(id);
@@ -25,10 +29,10 @@ router.get('/:id', async (req, res) => {
 });
 
 // POST /usuarios - Criar novo usuário
-router.post('/', async (req, res) => {
+router.post('/', authorizeAdmin, async (req, res) => {
   try {
     const dados = req.body;
-    const usuario = await usuarioController.create(dados);
+    const usuario = await authController.register(dados);
     res.status(201).json({ success: true, usuario });
   } catch (error) {
     res.status(400).json({ success: false, error: error.message });
@@ -36,7 +40,7 @@ router.post('/', async (req, res) => {
 });
 
 // PUT /usuarios/:id - Atualizar usuário
-router.put('/:id', async (req, res) => {
+router.put('/:id', ownDataOrAdmin, async (req, res) => {
   try {
     const id = req.params.id;
     const dados = req.body;
@@ -48,7 +52,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // DELETE /usuarios/:id - Deletar usuário
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', ownDataOrAdmin, async (req, res) => {
   try {
     const id = req.params.id;
     const usuarioDeletado = await usuarioController.delete(id);

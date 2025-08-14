@@ -4,7 +4,9 @@ const { Usuario } = require('../../models');
 
 const authenticateToken = async (req, res, next) => {
   const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+  console.log(authHeader);
+  const token = authHeader;
+  console.log(token);
 
   if (!token) {
     return res.status(401).json({ 
@@ -15,16 +17,17 @@ const authenticateToken = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
+    console.log(decoded);
     // Verificar se o usuário ainda existe e está ativo
     const usuario = await Usuario.findOne({
       where: { 
         id: decoded.userId,
         ativo: true 
       },
-      attributes: ['id', 'nome', 'email', 'nivel_acesso', 'cidade', 'foto']
+      attributes: ['id', 'nome', 'email', 'nivel_acesso', 'foto']
     });
 
+      console.log(usuario);
     if (!usuario) {
       return res.status(401).json({ 
         error: 'Usuário não encontrado ou inativo',
@@ -59,15 +62,6 @@ const authorizeAdmin = (req, res, next) => {
   next();
 };
 
-const authorizeProfessor = (req, res, next) => {
-  if (!['admin', 'professor'].includes(req.user.nivel_acesso)) {
-    return res.status(403).json({ 
-      error: 'Acesso negado. Privilégios de professor ou administrador requeridos',
-      codigo: 'ACESSO_NEGADO'
-    });
-  }
-  next();
-};
 
 const optionalAuth = async (req, res, next) => {
   const authHeader = req.headers['authorization'];
@@ -96,10 +90,26 @@ const optionalAuth = async (req, res, next) => {
 
   next();
 };
+const ownDataOrAdmin = (req, res, next) => {
+  const userId = req.params.id;
+  console.log(req.params.id);
+  console.log(userId);
+
+  if (req.user.nivel_acesso === 'admin' || String(req.user.id) === String(userId)) {
+    return next()
+  }
+
+  return res.status(403).json({
+    success: false,
+    error: 'Você só pode acessar seus próprios dados ou precisa ser administrador.',
+    codigo: 'ACESSO_NEGADO'
+  });
+};
+
 
 module.exports = { 
   authenticateToken, 
   authorizeAdmin, 
-  authorizeProfessor,
-  optionalAuth 
+  optionalAuth,
+  ownDataOrAdmin  //teste com a função
 };

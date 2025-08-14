@@ -86,7 +86,7 @@ async function startServer() {
     
     // Inserir dados iniciais (apenas em desenvolvimento)
     if (process.env.NODE_ENV === 'development') {
-      await seedDatabase();
+      // await seedDatabase(); desativada para poder acrescentar informações no seeders com sequelize-cli
     }
     
     // Iniciar servidor
