@@ -29,9 +29,8 @@ router.get('/:id', ownDataOrAdmin, async (req, res) => {
   }
 });
 
-router.post('/', ownDataOrAdmin, async (req, res) => {
+router.post('/', async (req, res) => {
   try {
-    // const { data_realizacao, id_usuario} = req.body
     const simuladoResposta = await simuladoRespostaController.create(req.body);
     res.status(201).json(simuladoResposta);
   } catch (error) {
