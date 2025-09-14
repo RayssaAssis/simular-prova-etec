@@ -8,7 +8,7 @@ class DisciplinaController {
   async getAll() {
     try {
       const disciplinas = await Disciplina.findAll({
-        where: { ativo: true },
+        // where: { ativo: true },
         order: [['nome', 'ASC']]
       });
       return disciplinas;
