@@ -2,80 +2,61 @@ const express = require('express');
 const router = express.Router();
 const simuladoController = require('../controllers/simuladoController');
 const { authenticateToken, authorizeAdmin, ownDataOrAdmin } = require('../middleware/auth');
+const { asyncHandler } = require('../middleware/errorHandlers');
 
 router.use(authenticateToken);
 
-router.get('/', authorizeAdmin, async (req, res) => {
-  try {
-    const simulado = await simuladoController.getAll();
-    res.json(simulado);
-  } catch (error) {
-    res.status(400).json({
-      success: false,
-      error: error.message
-    });
-  }
-});
+// ROTA CORRIGIDA: Lida com GET /simulados E GET /simulados?id_usuario=ID
+router.get('/', asyncHandler(async (req, res, next) => {
+    
+    // 1. Caso de uso: Requisição com filtro de usuário (GET /simulados?id_usuario=7)
+    if (req.query.id_usuario) {
+        
+        // Mapeia o ID do query para o params para que o middleware 'ownDataOrAdmin' funcione
+        req.params.id = req.query.id_usuario;
 
-router.get('/:id', ownDataOrAdmin, async (req, res) => {
-  try {
-    const simulado = await simuladoController.getById(req.params.id);
-    res.json(simulado);
-  } catch (error) {
-    res.status(400).json({
-      success: false,
-      error: error.message
-    });
-  }
-});
+        // Usa o middleware para verificar se o usuário logado (token) é o admin OU é o dono do ID na query.
+        ownDataOrAdmin(req, res, asyncHandler(async () => {
+            const simulados = await simuladoController.getByUserId(req.query.id_usuario);
+            res.json(simulados);
+        }));
+        
+        return; 
+    }
 
-router.get('/user/:id', ownDataOrAdmin, async (req, res) => {
-  try {
-    const simulados = await simuladoController.getByUserId(req.params.id);
-    res.json(simulados);
-  } catch (error) {
-    res.status(400).json({
-      success: false,
-      error: error.message
-    });
-  }
-});
+    // 2. Caso de uso: Requisição sem filtro (GET /simulados) - Exige Admin (Comportamento original)
+    authorizeAdmin(req, res, asyncHandler(async () => {
+        const simulado = await simuladoController.getAll();
+        res.json(simulado);
+    }));
+}));
 
-router.post('/', async (req, res) => {
-  try {
-    const { data_realizacao, id_usuario} = req.body
-    const simulado = await simuladoController.create(req.body);
-    res.status(201).json(simulado);
-  } catch (error) {
-    res.status(400).json({
-      success: false,
-      error: error.message
-    });
-  }
-});
+// Rotas originais abaixo (mantidas)
 
-router.put('/:id', authorizeAdmin, async (req, res) => {
-  try{
-    const simulado = await simuladoController.update(req.params.id, req.body);
-    res.json(simulado);
-  } catch (error) {
-    res.status(400).json({
-      success: false,
-      error: error.message
-    });
-  }
-});
+router.get('/:id', ownDataOrAdmin, asyncHandler(async (req, res) => {
+    const simulado = await simuladoController.getById(req.params.id);
+    res.json(simulado);
+}));
 
-router.delete('/:id',  authorizeAdmin, async (req, res) => {
-  try {
-    const simulado = await simuladoController.delete(req.params.id);
-    res.json({message: "Excluido com sucesso", simulado});
-  } catch (error) {
-    res.status(400).json({
-      success: false,
-      error: error.message
-    });
-  }
-});
+router.get('/user/:id', ownDataOrAdmin, asyncHandler(async (req, res) => {
+    const simulados = await simuladoController.getByUserId(req.params.id);
+    res.json(simulados);
+}));
+
+router.post('/', asyncHandler(async (req, res) => {
+    const { data_realizacao, id_usuario} = req.body
+    const simulado = await simuladoController.create(req.body);
+    res.status(201).json(simulado);
+}));
+
+router.put('/:id', authorizeAdmin, asyncHandler(async (req, res) => {
+    const simulado = await simuladoController.update(req.params.id, req.body);
+    res.json(simulado);
+}));
+
+router.delete('/:id',  authorizeAdmin, asyncHandler(async (req, res) => {
+    const simulado = await simuladoController.delete(req.params.id);
+    res.json({message: "Excluido com sucesso", simulado});
+}));
 
 module.exports = router;
