@@ -1,8 +1,8 @@
 # Simular Prova ETEC – Backend
 
-Backend do projeto **Simular Prova ETEC**, desenvolvido como Trabalho de Conclusão de Curso (TCC).
+Backend do projeto **Simular Prova ETEC**, desenvolvido como Trabalho de Conclusão de Curso (TCC) do curso Técnico em Desenvolvimento de Sistemas.
 
-O objetivo do sistema é fornecer uma API para gerenciamento de usuários e provas simuladas, com autenticação e segurança de dados.
+O objetivo do sistema é fornecer uma **API REST** para gerenciamento de usuários e provas simuladas, com foco em **segurança**, **organização do código** e **boas práticas de desenvolvimento backend**.
 
 ---
 
@@ -19,7 +19,7 @@ O objetivo do sistema é fornecer uma API para gerenciamento de usuários e prov
 ---
 
 ## Arquitetura de software
-O projeto utiliza **arquitetura em camadas**, separando as responsabilidades da aplicação, o que melhora a organização e a manutenção do código.
+O projeto segue o padrão de **arquitetura em camadas**, separando as responsabilidades da aplicação e facilitando a manutenção e escalabilidade do código.
 
 Camadas utilizadas:
 - Routes
@@ -31,8 +31,8 @@ Camadas utilizadas:
 
 ## Funcionalidades
 - API REST
-- CRUD
-- Autenticação com JWT
+- Operações CRUD
+- Autenticação e autorização com JWT
 - Criptografia de senhas
 - Envio de e-mails para recuperação de acesso
 
