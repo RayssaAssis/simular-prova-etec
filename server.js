@@ -20,7 +20,7 @@ app.use(helmet({
 }));
 
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: "http://127.0.0.1:5500" || 'http://localhost:3000',
   credentials: true
 }));
 
@@ -52,7 +52,7 @@ app.get('/health', async (req, res) => {
   try {
     const { sequelize } = require('./models');
     await sequelize.authenticate();
-    
+
     res.json({
       status: 'healthy',
       database: 'connected',
@@ -77,18 +77,18 @@ app.use(errorHandler);
 async function startServer() {
   try {
     console.log('🚀 Iniciando Simulador ETEC API...');
-    
+
     // Conectar ao banco de dados
     await connectDatabase();
-    
+
     // Sincronizar modelos
     await syncDatabase();
-    
+
     // Inserir dados iniciais (apenas em desenvolvimento)
     if (process.env.NODE_ENV === 'development') {
       // await seedDatabase(); desativada para poder acrescentar informações no seeders com sequelize-cli
     }
-    
+
     // Iniciar servidor
     const server = app.listen(PORT, () => {
       console.log('\n✅ Servidor iniciado com sucesso!');
@@ -102,7 +102,7 @@ async function startServer() {
     // Graceful shutdown
     const shutdown = async (signal) => {
       console.log(`\n📝 Recebido sinal ${signal}, encerrando servidor...`);
-      
+
       server.close(async () => {
         try {
           const { sequelize } = require('./models');

@@ -12,7 +12,9 @@ const availableRoutes = [
   { path: '/alternativas', module: path.join(__dirname, 'alternativas.js'), description: 'Gerenciamento de alternativas' },
   { path: '/usuarios', module: path.join(__dirname, 'usuarios.js'), description: 'Gerenciamento de usuários' },
   { path: '/simulados', module: path.join(__dirname, 'simulados.js'), description: 'Sistema de simulados' },
-  { path: '/simuladoRespostas', module: path.join(__dirname, 'simuladoRespostas.js'), description: 'Sistema de Resposta simulados' }
+  { path: '/simuladoRespostas', module: path.join(__dirname, 'simuladoRespostas.js'), description: 'Sistema de Resposta simulados' },
+  { path: '/simuladoUsuario', module: path.join(__dirname, 'simuladoUsuario.js'), description: 'Respostas de um usuário específico' },
+  { path: '/simuladoEspecifico', module: path.join(__dirname, 'simuladoEspecifico.js'), description: 'Respostas de um simulado específico' }
 ];
 
 
